@@ -49,9 +49,9 @@ button:hover {
   margin-top: 20px;
 }
 
-video {
+iframe {
   width: 100%;
-  height: auto;
+  height: 200px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background: #000;
