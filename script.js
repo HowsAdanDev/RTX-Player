@@ -1,4 +1,11 @@
-// Function to generate multiple video players
+// Function to extract YouTube video ID from a given URL
+function getYouTubeVideoID(url) {
+  const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
+// Function to generate multiple YouTube iframe players
 function generatePlayers() {
   const videoContainer = document.getElementById("videoContainer");
   const videoLink = document.getElementById("videoLink").value;
@@ -7,25 +14,26 @@ function generatePlayers() {
   // Clear previous video players
   videoContainer.innerHTML = '';
 
-  if (!videoLink) {
-    alert("Please enter a valid video link.");
+  // Extract YouTube video ID
+  const videoID = getYouTubeVideoID(videoLink);
+  if (!videoID) {
+    alert("Please enter a valid YouTube video link.");
     return;
   }
 
-  let playerCount = parseInt(playerCountInput);
-  
   // Validate player count input
+  let playerCount = parseInt(playerCountInput);
   if (isNaN(playerCount) || playerCount < 1 || playerCount > 1000) {
     alert("Please enter a valid number of players (between 1 and 1000).");
     return;
   }
 
-  // Generate video players
+  // Generate YouTube iframe players
   for (let i = 0; i < playerCount; i++) {
-    const videoElement = document.createElement("video");
-    videoElement.src = videoLink;
-    videoElement.controls = true;
-    videoElement.autoplay = true;
-    videoContainer.appendChild(videoElement);
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&controls=1`;
+    iframe.allow = "autoplay; encrypted-media";
+    iframe.allowFullscreen = true;
+    videoContainer.appendChild(iframe);
   }
 }
